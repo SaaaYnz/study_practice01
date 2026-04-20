@@ -27,6 +27,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:text="👋 Добро пожаловать!"
+                android:textColor="@color/black"
                 android:textSize="12pt"
                 android:textStyle="bold"/>
 
@@ -35,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:textSize="8pt"
-                android:text="Войдите чтобы пользоваться функциями\n приложения"
+                android:text="Войдите чтобы пользоваться функциями\nприложения"
                 android:textColor="@color/black"/>
 
             <LinearLayout
@@ -56,6 +57,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:paddingStart="10dp"
+                    android:inputType="textEmailAddress"
                     android:hint="example@mail.com"
                     android:background="@drawable/ip_registartion_field"/>
 
@@ -72,6 +74,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:paddingStart="10dp"
+                    android:inputType="textPassword"
                     android:background="@drawable/ip_registartion_field"/>
 
             </LinearLayout>
@@ -83,7 +86,8 @@
                 android:background="@drawable/bg_button_continue"
                 android:text="Далее"
                 android:textSize="8pt"
-                app:backgroundTint="@null" />
+                android:onClick="onContinue"
+                app:backgroundTint="@null"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -92,7 +96,8 @@
                 android:gravity="center"
                 android:text="Зарегистироваться"
                 android:textColor="@color/blue_main"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:onClick="onRegistration"/>
 
             <TextView
                 android:layout_width="match_parent"

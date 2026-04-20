@@ -8,4 +8,6 @@
     <color name="bg_input_field_reg">#F5F5F9</color>
     <color name="border_input_field_reg">#EBEBEB</color>
     <color name="red">#F01</color>
+    <color name="password_button">#F5F5F9</color>
+    <color name="arrow_color">#7E7E9A</color>
 </resources>
