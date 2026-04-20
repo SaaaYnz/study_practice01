@@ -4,4 +4,8 @@
     <color name="white">#FFFFFFFF</color>
     <color name="blue_main">#2556F3</color>
     <color name="blue_second">#6FBCE3</color>
+    <color name="foreign_text">#7D7C7C</color>
+    <color name="bg_input_field_reg">#F5F5F9</color>
+    <color name="border_input_field_reg">#EBEBEB</color>
+    <color name="red">#F01</color>
 </resources>
