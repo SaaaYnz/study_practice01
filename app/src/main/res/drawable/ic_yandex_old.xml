@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <!-- Буква Я -->
+    <path
+        android:fillColor="#FC3F1D"
+        android:pathData="M12,2C6.48,2 2,6.48 2,12s4.48,10 10,10 10,-4.48 10,-10S17.52,2 12,2zM12,18c-3.31,0 -6,-2.69 -6,-6s2.69,-6 6,-6 6,2.69 6,6 -2.69,6 -6,6z"/>
+
+    <!-- Внутренняя часть (стилизованная Я) -->
+    <path
+        android:fillColor="#000000"
+        android:pathData="M12,8h-2v8h2v-3h1.5l1.5,3h2l-1.8,-3.4c0.8,-0.5 1.3,-1.3 1.3,-2.1 0,-1.4 -1.1,-2.5 -2.5,-2.5H12zM13.5,11.5c-0.6,0 -1,-0.4 -1,-1s0.4,-1 1,-1 1,0.4 1,1 -0.4,1 -1,1z"/>
+
+</vector>
