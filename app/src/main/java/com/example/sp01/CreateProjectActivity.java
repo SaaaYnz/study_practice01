@@ -1,0 +1,17 @@
+package com.example.sp01;
+
+import android.os.Bundle;
+import android.widget.ImageButton;
+import androidx.appcompat.app.AppCompatActivity;
+
+public class CreateProjectActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_create_project);
+
+        ImageButton backButton = findViewById(R.id.btnBackCreateProject);
+        backButton.setOnClickListener(v -> finish());
+    }
+}

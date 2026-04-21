@@ -12,13 +12,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SP01">
         <activity
-            android:name=".MainPageActivity"
+            android:name=".CreateProjectActivity"
             android:exported="false" />
         <activity
-            android:name=".ProfileActivity"
+            android:name=".CartActivity"
             android:exported="false" />
         <activity
-            android:name=".RegistartionCaptchaActivity"
+            android:name=".SplashActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RegistrartionCaptchaActivity"
             android:exported="false" />
         <activity
             android:name=".CreatePasswordActivity"

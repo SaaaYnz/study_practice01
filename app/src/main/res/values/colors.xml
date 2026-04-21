@@ -10,4 +10,9 @@
     <color name="red">#F01</color>
     <color name="password_button">#F5F5F9</color>
     <color name="arrow_color">#7E7E9A</color>
+    <color name="catalog_bg">#F8F8FA</color>
+    <color name="catalog_card_stroke">#E8E8EF</color>
+    <color name="catalog_text_primary">#111111</color>
+    <color name="catalog_text_secondary">#8A8A96</color>
+    <color name="catalog_chip_bg">#EFEFF4</color>
 </resources>
