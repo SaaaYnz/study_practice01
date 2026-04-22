@@ -6,4 +6,27 @@
         <item>Мужской</item>
         <item>Женский</item>
     </string-array>
+
+    <string-array name="project_type_array">
+        <item>Вязание</item>
+        <item>Шитье</item>
+        <item>Вышивка</item>
+        <item>Другое</item>
+    </string-array>
+
+    <string-array name="project_for_array">
+        <item>Себе</item>
+        <item>Женщине</item>
+        <item>Мужчине</item>
+        <item>Ребенку</item>
+    </string-array>
+
+    <string-array name="project_category_array">
+        <item>Свитер</item>
+        <item>Кардиган</item>
+        <item>Шапка</item>
+        <item>Шарф</item>
+        <item>Платье</item>
+        <item>Другое</item>
+    </string-array>
 </resources>

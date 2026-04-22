@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -67,6 +67,7 @@
                 android:orientation="horizontal">
 
                 <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnFilterAll"
                     android:layout_width="0dp"
                     android:layout_height="48dp"
                     android:layout_weight="1"
@@ -78,6 +79,7 @@
                     app:backgroundTint="@null" />
 
                 <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnFilterWomen"
                     android:layout_width="0dp"
                     android:layout_height="48dp"
                     android:layout_marginStart="8dp"
@@ -91,6 +93,7 @@
                     app:backgroundTint="@null" />
 
                 <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnFilterMen"
                     android:layout_width="0dp"
                     android:layout_height="48dp"
                     android:layout_marginStart="8dp"
@@ -104,133 +107,23 @@
                     app:backgroundTint="@null" />
 
             </LinearLayout>
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/cardProduct1"
+            <TextView
+                android:id="@+id/catalogTvEmptyProducts"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:clickable="true"
-                android:focusable="true"
-                app:cardBackgroundColor="@color/white"
-                app:cardCornerRadius="14dp"
-                app:strokeColor="@color/catalog_card_stroke"
-                app:strokeWidth="1dp">
+                android:gravity="center"
+                android:text="Товары не найдены"
+                android:textColor="@color/catalog_text_secondary"
+                android:textSize="16sp"
+                android:visibility="gone" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
-
-                    <TextView
-                        android:id="@+id/tvTitle1"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/catalog_text_primary"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/tvCategory1"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:textColor="@color/catalog_text_secondary"
-                        android:textSize="14sp" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@+id/tvPrice1"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:textColor="@color/catalog_text_primary"
-                            android:textSize="28sp"
-                            android:textStyle="bold" />
-
-                        <Button
-                            android:id="@+id/btnAdd1"
-                            android:layout_width="124dp"
-                            android:layout_height="40dp"
-                            android:background="@drawable/bg_button_continue"
-                            android:text="Добавить"
-                            android:textAllCaps="false"
-                            android:textColor="@color/white"
-                            app:backgroundTint="@null" />
-                    </LinearLayout>
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/cardProduct2"
+            <LinearLayout
+                android:id="@+id/catalogProductsContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
                 android:layout_marginBottom="16dp"
-                android:clickable="true"
-                android:focusable="true"
-                app:cardBackgroundColor="@color/white"
-                app:cardCornerRadius="14dp"
-                app:strokeColor="@color/catalog_card_stroke"
-                app:strokeWidth="1dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
-
-                    <TextView
-                        android:id="@+id/tvTitle2"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/catalog_text_primary"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/tvCategory2"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:textColor="@color/catalog_text_secondary"
-                        android:textSize="14sp" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@+id/tvPrice2"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:textColor="@color/catalog_text_primary"
-                            android:textSize="28sp"
-                            android:textStyle="bold" />
-
-                        <Button
-                            android:id="@+id/btnAdd2"
-                            android:layout_width="124dp"
-                            android:layout_height="40dp"
-                            android:background="@drawable/bg_button_outline_blue"
-                            android:text="Убрать"
-                            android:textAllCaps="false"
-                            android:textColor="@color/blue_main"
-                            app:backgroundTint="@null" />
-                    </LinearLayout>
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
+                android:orientation="vertical" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 

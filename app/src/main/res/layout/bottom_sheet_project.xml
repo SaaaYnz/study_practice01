@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <TextView
+        android:id="@+id/tvProjectSheetTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/catalog_text_primary"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tvProjectSheetType"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textColor="@color/catalog_text_secondary"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tvProjectSheetStart"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:textColor="@color/catalog_text_primary"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tvProjectSheetEnd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textColor="@color/catalog_text_primary"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tvProjectSheetFor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textColor="@color/catalog_text_primary"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tvProjectSheetSource"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textColor="@color/catalog_text_primary"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tvProjectSheetCategory"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textColor="@color/catalog_text_primary"
+        android:textSize="16sp" />
+</LinearLayout>

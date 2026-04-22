@@ -100,6 +100,7 @@
 
 
                 <EditText
+                    android:id="@+id/etRegEmail"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:paddingStart="10dp"
@@ -115,10 +116,12 @@
                 android:layout_height="match_parent">
 
                 <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnRegistrationNext"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
                     android:background="@drawable/bg_button_continue"
+                    android:enabled="false"
                     android:text="Далее"
                     android:textSize="8pt"
                     android:onClick="onClickNext"

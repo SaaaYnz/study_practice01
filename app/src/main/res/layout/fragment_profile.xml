@@ -13,24 +13,25 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="20dp"
             android:layout_marginTop="40dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="20dp">
 
             <TextView
+                android:id="@+id/tvProfileName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Имя"
                 android:textColor="@color/black"
                 android:textSize="16pt"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/tvProfileEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="почта@почта.почта"
-                android:textColor="@color/foreign_text"/>
-
+                android:textColor="@color/foreign_text" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -41,26 +42,25 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="📋"
-                    android:textSize="20pt"/>
+                    android:textSize="20pt" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="15dp"
                     android:layout_gravity="center"
+                    android:layout_marginStart="15dp"
                     android:text="Мои заказы"
                     android:textColor="@color/black"
                     android:textSize="8pt"
                     android:textStyle="bold" />
-
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:orientation="horizontal"
-                android:gravity="center">
+                android:gravity="center"
+                android:orientation="horizontal">
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -72,17 +72,17 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="⚙️"
-                        android:textSize="20pt"/>
+                        android:textSize="20pt" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         android:layout_marginStart="15dp"
                         android:text="Уведомления"
-                        android:layout_gravity="center"
                         android:textColor="@color/black"
                         android:textSize="8pt"
-                        android:textStyle="bold"/>
+                        android:textStyle="bold" />
                 </LinearLayout>
 
                 <Switch
@@ -91,34 +91,34 @@
                     android:layout_height="32dp"
                     android:switchMinWidth="62dp"
                     android:switchPadding="0dp"
-                    android:track="@drawable/bg_switch_track"
-                    android:thumb="@drawable/ic_switcher"/>
-
+                    android:thumb="@drawable/ic_switcher"
+                    android:track="@drawable/bg_switch_track" />
             </LinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginTop="70dp"
                 android:text="Политики конфиденциальности"
-                android:textColor="@color/foreign_text"
-                android:layout_gravity="center"/>
+                android:textColor="@color/foreign_text" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginTop="20dp"
                 android:text="Пользовательское соглашение"
-                android:textColor="@color/foreign_text"
-                android:layout_gravity="center"/>
+                android:textColor="@color/foreign_text" />
 
             <TextView
+                android:id="@+id/tvLogout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginTop="20dp"
                 android:text="Выход"
-                android:textColor="@color/red"
-                android:layout_gravity="center"/>
+                android:textColor="@color/red" />
 
         </LinearLayout>
 
