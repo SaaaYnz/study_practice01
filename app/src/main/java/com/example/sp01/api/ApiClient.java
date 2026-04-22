@@ -30,4 +30,8 @@ public final class ApiClient {
         }
         return apiService;
     }
+
+    public static String getBaseUrl() {
+        return BASE_URL;
+    }
 }

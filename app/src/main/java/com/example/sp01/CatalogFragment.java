@@ -69,15 +69,16 @@ public class CatalogFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        refreshCartUi();
+        CartManager.load(requireContext(), (success, errorMessage) -> {
+            if (!isAdded()) {
+                return;
+            }
+            requireActivity().runOnUiThread(this::refreshCartUi);
+        });
     }
 
     private void loadProducts() {
-        String token = requireContext().getSharedPreferences("auth", 0)
-                .getString("access_token", null);
-        String authorization = TextUtils.isEmpty(token) ? null : "Bearer " + token;
-
-        ApiClient.getApiService().getProducts(authorization, 30, "-created")
+        ApiClient.getApiService().getProducts(AuthSession.getAuthorization(requireContext()), 30, "-created")
                 .enqueue(new Callback<JsonObject>() {
                     @Override
                     public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
@@ -146,13 +147,6 @@ public class CatalogFragment extends Fragment {
         });
 
         updateFilterButtons();
-
-        ImageView profile = rootView.findViewById(R.id.ivProfile);
-        if (profile != null) {
-            profile.setOnClickListener(v -> {
-
-            });
-        }
     }
 
     private void applyFilters() {
@@ -199,10 +193,14 @@ public class CatalogFragment extends Fragment {
             price.setText(product.getPrice());
 
             card.setOnClickListener(v -> showProductSheet(product));
-            action.setOnClickListener(v -> {
-                CartManager.toggle(requireContext(), product);
-                refreshCartUi();
-            });
+            action.setOnClickListener(v ->
+                    CartManager.toggle(requireContext(), product, (success, errorMessage) -> {
+                        if (!isAdded()) {
+                            return;
+                        }
+                        requireActivity().runOnUiThread(this::refreshCartUi);
+                    })
+            );
 
             updateProductActionButton(action, product);
             productsContainer.addView(card);
@@ -230,10 +228,19 @@ public class CatalogFragment extends Fragment {
                 : product.getTypeCloses().toLowerCase(Locale.ROOT);
 
         if (currentFilter == FilterType.WOMEN) {
-            return typeCloses.contains("жен");
+            return containsAny(typeCloses, "жен", "female", "woman", "girls", "girl", "р¶рµ");
         }
 
-        return typeCloses.contains("муж");
+        return containsAny(typeCloses, "муж", "male", "man", "boys", "boy", "рјсѓ");
+    }
+
+    private boolean containsAny(String value, String... needles) {
+        for (String needle : needles) {
+            if (value.contains(needle)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void updateFilterButtons() {
@@ -327,12 +334,17 @@ public class CatalogFragment extends Fragment {
 
         boolean inCart = CartManager.isInCart(requireContext(), product.getId());
         addButton.setText(inCart ? "Убрать из корзины" : "Добавить за " + product.getPrice());
-
-        addButton.setOnClickListener(v -> {
-            CartManager.toggle(requireContext(), product);
-            refreshCartUi();
-            dialog.dismiss();
-        });
+        addButton.setOnClickListener(v ->
+                CartManager.toggle(requireContext(), product, (success, errorMessage) -> {
+                    if (!isAdded()) {
+                        return;
+                    }
+                    requireActivity().runOnUiThread(() -> {
+                        refreshCartUi();
+                        dialog.dismiss();
+                    });
+                })
+        );
 
         close.setOnClickListener(v -> dialog.dismiss());
 

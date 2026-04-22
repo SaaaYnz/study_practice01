@@ -14,8 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class CreateProjectActivity extends AppCompatActivity {
 
     private AutoCompleteTextView typeInput;
-    private AutoCompleteTextView forInput;
-    private AutoCompleteTextView categoryInput;
+    private EditText sizeInput;
     private EditText nameInput;
     private EditText startDateInput;
     private EditText endDateInput;
@@ -30,16 +29,13 @@ public class CreateProjectActivity extends AppCompatActivity {
         Button confirmButton = findViewById(R.id.btnConfirmProject);
 
         typeInput = findViewById(R.id.etProjectType);
-        forInput = findViewById(R.id.etProjectFor);
-        categoryInput = findViewById(R.id.etProjectCategory);
+        sizeInput = findViewById(R.id.etProjectFor);
         nameInput = findViewById(R.id.etProjectName);
         startDateInput = findViewById(R.id.etProjectStartDate);
         endDateInput = findViewById(R.id.etProjectEndDate);
         sourceInput = findViewById(R.id.etProjectSource);
 
         setupDropdown(typeInput, R.array.project_type_array);
-        setupDropdown(forInput, R.array.project_for_array);
-        setupDropdown(categoryInput, R.array.project_category_array);
 
         backButton.setOnClickListener(v -> finish());
         confirmButton.setOnClickListener(v -> saveProject());
@@ -62,18 +58,22 @@ public class CreateProjectActivity extends AppCompatActivity {
         String name = getTrimmed(nameInput);
         String startDate = getTrimmed(startDateInput);
         String endDate = getTrimmed(endDateInput);
-        String projectFor = getTrimmed(forInput);
+        String size = getTrimmed(sizeInput);
         String source = getTrimmed(sourceInput);
-        String category = getTrimmed(categoryInput);
 
         if (TextUtils.isEmpty(type) || TextUtils.isEmpty(name)) {
-            Toast.makeText(this, "Заполни хотя бы тип и название проекта", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Заполните хотя бы тип и название проекта", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        ProjectStorage.saveProject(this, type, name, startDate, endDate, projectFor, source, category);
-        Toast.makeText(this, "Проект создан", Toast.LENGTH_SHORT).show();
-        finish();
+        ProjectStorage.saveProject(this, type, name, startDate, endDate, size, source, (success, errorMessage) -> runOnUiThread(() -> {
+            if (success) {
+                Toast.makeText(this, "Проект создан", Toast.LENGTH_SHORT).show();
+                finish();
+            } else {
+                Toast.makeText(this, errorMessage == null ? "Не удалось создать проект" : errorMessage, Toast.LENGTH_LONG).show();
+            }
+        }));
     }
 
     private String getTrimmed(EditText editText) {

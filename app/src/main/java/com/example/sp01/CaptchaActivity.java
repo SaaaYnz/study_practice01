@@ -38,12 +38,12 @@ public class CaptchaActivity extends AppCompatActivity {
         String enteredOtpCode = etOtpCode.getText().toString().trim();
 
         if (TextUtils.isEmpty(enteredOtpCode)) {
-            Toast.makeText(this, "Введи OTP-код", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Введите OTP-код", Toast.LENGTH_SHORT).show();
             return;
         }
 
         if (TextUtils.isEmpty(otpId)) {
-            Toast.makeText(this, "otpId не найден. Запроси OTP заново", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "otpId не найден. Запросите OTP заново", Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -81,8 +81,12 @@ public class CaptchaActivity extends AppCompatActivity {
 
                 if (!TextUtils.isEmpty(accessToken)) {
                     String userName = "Пользователь";
+                    String userId = null;
                     if (json.has("record") && json.get("record").isJsonObject()) {
                         JsonObject record = json.getAsJsonObject("record");
+                        if (record.has("id") && !record.get("id").isJsonNull()) {
+                            userId = record.get("id").getAsString();
+                        }
                         if (record.has("name") && !record.get("name").isJsonNull()) {
                             String nameFromServer = record.get("name").getAsString();
                             if (!TextUtils.isEmpty(nameFromServer)) {
@@ -91,12 +95,7 @@ public class CaptchaActivity extends AppCompatActivity {
                         }
                     }
 
-                    getSharedPreferences("auth", MODE_PRIVATE)
-                            .edit()
-                            .putString("access_token", accessToken)
-                            .putString("user_email", email)
-                            .putString("user_name", userName)
-                            .apply();
+                    AuthSession.saveAuth(CaptchaActivity.this, accessToken, email, userName, userId);
                 }
 
                 startActivity(new Intent(CaptchaActivity.this, SplashActivity.class));

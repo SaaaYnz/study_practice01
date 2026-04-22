@@ -51,11 +51,25 @@ public class ProjectsFragment extends Fragment {
             return;
         }
 
-        List<ProjectItem> projects = ProjectStorage.getProjects(requireContext());
+        projectsContainer.removeAllViews();
+        emptyProjectsText.setVisibility(View.VISIBLE);
+        emptyProjectsText.setText("Загрузка проектов...");
+
+        ProjectStorage.getProjects(requireContext(), (projects, errorMessage) -> {
+            if (!isAdded()) {
+                return;
+            }
+
+            requireActivity().runOnUiThread(() -> renderProjects(projects, errorMessage));
+        });
+    }
+
+    private void renderProjects(List<ProjectItem> projects, String errorMessage) {
         projectsContainer.removeAllViews();
 
-        if (projects.isEmpty()) {
+        if (projects == null || projects.isEmpty()) {
             emptyProjectsText.setVisibility(View.VISIBLE);
+            emptyProjectsText.setText(errorMessage == null ? "Пока нет проектов" : errorMessage);
             return;
         }
 
@@ -100,9 +114,9 @@ public class ProjectsFragment extends Fragment {
         ((TextView) sheet.findViewById(R.id.tvProjectSheetType)).setText("Тип: " + valueOrDash(project.getType()));
         ((TextView) sheet.findViewById(R.id.tvProjectSheetStart)).setText("Дата начала: " + valueOrDash(project.getStartDate()));
         ((TextView) sheet.findViewById(R.id.tvProjectSheetEnd)).setText("Дата окончания: " + valueOrDash(project.getEndDate()));
-        ((TextView) sheet.findViewById(R.id.tvProjectSheetFor)).setText("Кому: " + valueOrDash(project.getProjectFor()));
+        ((TextView) sheet.findViewById(R.id.tvProjectSheetFor)).setText("Размер: " + valueOrDash(project.getSize()));
         ((TextView) sheet.findViewById(R.id.tvProjectSheetSource)).setText("Источник: " + valueOrDash(project.getSource()));
-        ((TextView) sheet.findViewById(R.id.tvProjectSheetCategory)).setText("Категория: " + valueOrDash(project.getCategory()));
+        ((TextView) sheet.findViewById(R.id.tvProjectSheetCategory)).setText("Чертеж: " + valueOrDash(project.getTechnicalDrawing()));
 
         dialog.setContentView(sheet);
         dialog.show();

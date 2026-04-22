@@ -104,10 +104,9 @@ public class CreatePasswordActivity extends AppCompatActivity {
                         }
 
                         JsonObject json = response.body();
-                        String token = null;
-                        if (json.has("token") && !json.get("token").isJsonNull()) {
-                            token = json.get("token").getAsString();
-                        }
+                        String token = json.has("token") && !json.get("token").isJsonNull()
+                                ? json.get("token").getAsString()
+                                : null;
 
                         if (TextUtils.isEmpty(token)) {
                             Toast.makeText(CreatePasswordActivity.this, "JWT не получен", Toast.LENGTH_LONG).show();
@@ -115,8 +114,12 @@ public class CreatePasswordActivity extends AppCompatActivity {
                         }
 
                         String userName = defaultUserName;
+                        String userId = null;
                         if (json.has("record") && json.get("record").isJsonObject()) {
                             JsonObject record = json.getAsJsonObject("record");
+                            if (record.has("id") && !record.get("id").isJsonNull()) {
+                                userId = record.get("id").getAsString();
+                            }
                             if (record.has("name") && !record.get("name").isJsonNull()) {
                                 String nameFromServer = record.get("name").getAsString();
                                 if (!TextUtils.isEmpty(nameFromServer)) {
@@ -125,12 +128,7 @@ public class CreatePasswordActivity extends AppCompatActivity {
                             }
                         }
 
-                        getSharedPreferences("auth", MODE_PRIVATE)
-                                .edit()
-                                .putString("access_token", token)
-                                .putString("user_email", registerEmail)
-                                .putString("user_name", userName)
-                                .apply();
+                        AuthSession.saveAuth(CreatePasswordActivity.this, token, registerEmail, userName, userId);
 
                         Intent intent = new Intent(CreatePasswordActivity.this, SplashActivity.class);
                         startActivity(intent);

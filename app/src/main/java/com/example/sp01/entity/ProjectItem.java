@@ -7,21 +7,21 @@ public class ProjectItem {
     private final String name;
     private final String startDate;
     private final String endDate;
-    private final String projectFor;
+    private final String size;
     private final String source;
-    private final String category;
+    private final String technicalDrawing;
     private final long createdAt;
 
     public ProjectItem(String id, String type, String name, String startDate, String endDate,
-                       String projectFor, String source, String category, long createdAt) {
+                       String size, String source, String technicalDrawing, long createdAt) {
         this.id = id;
         this.type = type;
         this.name = name;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.projectFor = projectFor;
+        this.size = size;
         this.source = source;
-        this.category = category;
+        this.technicalDrawing = technicalDrawing;
         this.createdAt = createdAt;
     }
 
@@ -45,16 +45,16 @@ public class ProjectItem {
         return endDate;
     }
 
-    public String getProjectFor() {
-        return projectFor;
+    public String getSize() {
+        return size;
     }
 
     public String getSource() {
         return source;
     }
 
-    public String getCategory() {
-        return category;
+    public String getTechnicalDrawing() {
+        return technicalDrawing;
     }
 
     public long getCreatedAt() {

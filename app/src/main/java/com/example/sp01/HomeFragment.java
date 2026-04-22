@@ -18,9 +18,12 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
 import com.example.sp01.api.ApiClient;
 import com.example.sp01.api.ProductApiMapper;
+import com.example.sp01.api.PromotionApiMapper;
 import com.example.sp01.entity.CatalogProduct;
+import com.example.sp01.entity.PromotionItem;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.gson.JsonObject;
 
@@ -43,6 +46,12 @@ public class HomeFragment extends Fragment {
     private View rootView;
     private ViewGroup productsContainer;
     private TextView tvEmptyProducts;
+    private ImageView promoImagePrimary;
+    private ImageView promoImageSecondary;
+    private TextView promoTitlePrimary;
+    private TextView promoSubtitlePrimary;
+    private TextView promoTitleSecondary;
+    private TextView promoSubtitleSecondary;
 
     private final List<CatalogProduct> allProducts = new ArrayList<>();
     private FilterType currentFilter = FilterType.ALL;
@@ -56,12 +65,19 @@ public class HomeFragment extends Fragment {
 
         productsContainer = rootView.findViewById(R.id.homeProductsContainer);
         tvEmptyProducts = rootView.findViewById(R.id.homeTvEmptyProducts);
+        promoImagePrimary = rootView.findViewById(R.id.homePromoImagePrimary);
+        promoImageSecondary = rootView.findViewById(R.id.homePromoImageSecondary);
+        promoTitlePrimary = rootView.findViewById(R.id.homePromoTitlePrimary);
+        promoSubtitlePrimary = rootView.findViewById(R.id.homePromoSubtitlePrimary);
+        promoTitleSecondary = rootView.findViewById(R.id.homePromoTitleSecondary);
+        promoSubtitleSecondary = rootView.findViewById(R.id.homePromoSubtitleSecondary);
 
         rootView.findViewById(R.id.homeCartBar).setOnClickListener(v ->
                 startActivity(new Intent(requireContext(), CartActivity.class))
         );
 
         setupControls();
+        loadPromotions();
         loadProducts();
         return rootView;
     }
@@ -69,15 +85,16 @@ public class HomeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        refreshCartUi();
+        CartManager.load(requireContext(), (success, errorMessage) -> {
+            if (!isAdded()) {
+                return;
+            }
+            requireActivity().runOnUiThread(this::refreshCartUi);
+        });
     }
 
     private void loadProducts() {
-        String token = requireContext().getSharedPreferences("auth", 0)
-                .getString("access_token", null);
-        String authorization = TextUtils.isEmpty(token) ? null : "Bearer " + token;
-
-        ApiClient.getApiService().getProducts(authorization, 30, "-created")
+        ApiClient.getApiService().getProducts(AuthSession.getAuthorization(requireContext()), 30, "-created")
                 .enqueue(new Callback<JsonObject>() {
                     @Override
                     public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
@@ -103,6 +120,31 @@ public class HomeFragment extends Fragment {
                         }
                         allProducts.clear();
                         applyFilters();
+                    }
+                });
+    }
+
+    private void loadPromotions() {
+        ApiClient.getApiService().getPromotionsAndNews(AuthSession.getAuthorization(requireContext()), 1, 30)
+                .enqueue(new Callback<JsonObject>() {
+                    @Override
+                    public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                        if (!isAdded()) {
+                            return;
+                        }
+
+                        List<PromotionItem> promotions = response.isSuccessful() && response.body() != null
+                                ? PromotionApiMapper.parsePromotions(response.body())
+                                : null;
+                        bindPromotions(promotions);
+                    }
+
+                    @Override
+                    public void onFailure(Call<JsonObject> call, Throwable t) {
+                        if (!isAdded()) {
+                            return;
+                        }
+                        bindPromotions(null);
                     }
                 });
     }
@@ -192,16 +234,82 @@ public class HomeFragment extends Fragment {
             price.setText(product.getPrice());
 
             card.setOnClickListener(v -> showProductSheet(product));
-            action.setOnClickListener(v -> {
-                CartManager.toggle(requireContext(), product);
-                refreshCartUi();
-            });
+            action.setOnClickListener(v ->
+                    CartManager.toggle(requireContext(), product, (success, errorMessage) -> {
+                        if (!isAdded()) {
+                            return;
+                        }
+                        requireActivity().runOnUiThread(this::refreshCartUi);
+                    })
+            );
 
             updateProductActionButton(action, product);
             productsContainer.addView(card);
         }
 
         refreshCartUi();
+    }
+
+    private void bindPromotions(@Nullable List<PromotionItem> promotions) {
+        bindPromotionCard(
+                promotions != null && promotions.size() > 0 ? promotions.get(0) : null,
+                promoImagePrimary,
+                promoTitlePrimary,
+                promoSubtitlePrimary,
+                R.drawable.bg_promo_placeholder_teal,
+                "Лучшая цена",
+                "Товары недели"
+        );
+        bindPromotionCard(
+                promotions != null && promotions.size() > 1 ? promotions.get(1) : null,
+                promoImageSecondary,
+                promoTitleSecondary,
+                promoSubtitleSecondary,
+                R.drawable.bg_promo_placeholder_blue,
+                "Новые позиции",
+                "Пополнение каталога"
+        );
+    }
+
+    private void bindPromotionCard(@Nullable PromotionItem item,
+                                   @Nullable ImageView imageView,
+                                   @Nullable TextView titleView,
+                                   @Nullable TextView subtitleView,
+                                   int placeholderRes,
+                                   @NonNull String fallbackTitle,
+                                   @NonNull String fallbackSubtitle) {
+        if (imageView == null || titleView == null || subtitleView == null || !isAdded()) {
+            return;
+        }
+
+        titleView.setText(!TextUtils.isEmpty(item != null ? item.getTitle() : null)
+                ? item.getTitle()
+                : fallbackTitle);
+        subtitleView.setText(!TextUtils.isEmpty(item != null ? item.getSubtitle() : null)
+                ? item.getSubtitle()
+                : fallbackSubtitle);
+
+        Glide.with(this)
+                .load(buildPromotionImageUrl(item))
+                .placeholder(placeholderRes)
+                .error(placeholderRes)
+                .centerCrop()
+                .into(imageView);
+    }
+
+    @Nullable
+    private String buildPromotionImageUrl(@Nullable PromotionItem item) {
+        if (item == null || TextUtils.isEmpty(item.getId()) || TextUtils.isEmpty(item.getCollectionId())
+                || TextUtils.isEmpty(item.getImageName())) {
+            return null;
+        }
+        return ApiClient.getBaseUrl()
+                + "api/files/"
+                + item.getCollectionId()
+                + "/"
+                + item.getId()
+                + "/"
+                + item.getImageName();
     }
 
     private boolean matchesQuery(CatalogProduct product) {
@@ -214,7 +322,7 @@ public class HomeFragment extends Fragment {
     }
 
     private boolean matchesFilter(CatalogProduct product) {
-        if (currentFilter == HomeFragment.FilterType.ALL) {
+        if (currentFilter == FilterType.ALL) {
             return true;
         }
 
@@ -222,11 +330,20 @@ public class HomeFragment extends Fragment {
                 ? ""
                 : product.getTypeCloses().toLowerCase(Locale.ROOT);
 
-        if (currentFilter == HomeFragment.FilterType.WOMEN) {
-            return typeCloses.contains("жен");
+        if (currentFilter == FilterType.WOMEN) {
+            return containsAny(typeCloses, "жен", "female", "woman", "girls", "girl", "р¶рµ");
         }
 
-        return typeCloses.contains("муж");
+        return containsAny(typeCloses, "муж", "male", "man", "boys", "boy", "рјсѓ");
+    }
+
+    private boolean containsAny(String value, String... needles) {
+        for (String needle : needles) {
+            if (value.contains(needle)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void updateFilterButtons() {
@@ -320,11 +437,17 @@ public class HomeFragment extends Fragment {
 
         boolean inCart = CartManager.isInCart(requireContext(), product.getId());
         addButton.setText(inCart ? "Убрать из корзины" : "Добавить за " + product.getPrice());
-        addButton.setOnClickListener(v -> {
-            CartManager.toggle(requireContext(), product);
-            refreshCartUi();
-            dialog.dismiss();
-        });
+        addButton.setOnClickListener(v ->
+                CartManager.toggle(requireContext(), product, (success, errorMessage) -> {
+                    if (!isAdded()) {
+                        return;
+                    }
+                    requireActivity().runOnUiThread(() -> {
+                        refreshCartUi();
+                        dialog.dismiss();
+                    });
+                })
+        );
 
         close.setOnClickListener(v -> dialog.dismiss());
 

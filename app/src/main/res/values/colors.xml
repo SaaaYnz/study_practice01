@@ -16,4 +16,5 @@
     <color name="catalog_text_secondary">#8A8A96</color>
     <color name="catalog_chip_bg">#EFEFF4</color>
     <color name="button_continue_disabled">#C7CFEB</color>
+    <color name="news_text_color">#CCCCCC</color>
 </resources>

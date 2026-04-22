@@ -7,6 +7,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -37,18 +38,22 @@ public class CartActivity extends AppCompatActivity {
         btnCheckout = findViewById(R.id.btnCheckout);
         ivTrash = findViewById(R.id.ivTrash);
 
-        ivTrash.setOnClickListener(v -> {
-            CartManager.clear(this);
-            renderCart();
-        });
+        ivTrash.setOnClickListener(v ->
+                CartManager.clear(this, (success, errorMessage) -> runOnUiThread(this::renderCart))
+        );
 
-        renderCart();
+        btnCheckout.setOnClickListener(v ->
+                OrderManager.checkoutFromCart(this, (success, errorMessage) -> runOnUiThread(() -> {
+                    Toast.makeText(this, success ? "Заказ оформлен" : (errorMessage == null ? "Не удалось оформить заказ" : errorMessage), Toast.LENGTH_SHORT).show();
+                    renderCart();
+                }))
+        );
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        renderCart();
+        CartManager.load(this, (success, errorMessage) -> runOnUiThread(this::renderCart));
     }
 
     private void renderCart() {
@@ -83,20 +88,17 @@ public class CartActivity extends AppCompatActivity {
             tvPrice.setText(entry.product.getPrice());
             tvQty.setText(String.format(Locale.getDefault(), "%d шт", entry.quantity));
 
-            btnPlus.setOnClickListener(v -> {
-                CartManager.increment(this, entry.product.getId());
-                renderCart();
-            });
+            btnPlus.setOnClickListener(v ->
+                    CartManager.increment(this, entry.product.getId(), (success, errorMessage) -> runOnUiThread(this::renderCart))
+            );
 
-            btnMinus.setOnClickListener(v -> {
-                CartManager.decrement(this, entry.product.getId());
-                renderCart();
-            });
+            btnMinus.setOnClickListener(v ->
+                    CartManager.decrement(this, entry.product.getId(), (success, errorMessage) -> runOnUiThread(this::renderCart))
+            );
 
-            btnRemove.setOnClickListener(v -> {
-                CartManager.remove(this, entry.product.getId());
-                renderCart();
-            });
+            btnRemove.setOnClickListener(v ->
+                    CartManager.remove(this, entry.product.getId(), (success, errorMessage) -> runOnUiThread(this::renderCart))
+            );
 
             cartItemsContainer.addView(itemView);
         }
